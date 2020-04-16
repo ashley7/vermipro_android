@@ -13,8 +13,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.kosalgeek.genasync12.AsyncResponse;
+import com.kosalgeek.genasync12.EachExceptionsHandler;
 import com.kosalgeek.genasync12.PostResponseAsyncTask;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.util.HashMap;
 
 import static agriculture.vermipro.VermiproHelper.URL;
@@ -77,6 +82,27 @@ public class RegisterActivity extends AppCompatActivity {
                 });
 
                 postResponseAsyncTask.execute(URL+"register");
+                postResponseAsyncTask.setEachExceptionsHandler(new EachExceptionsHandler() {
+                    @Override
+                    public void handleIOException(IOException e) {
+                        Toast.makeText(getApplicationContext(), "Internet connectivity is weak.", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void handleMalformedURLException(MalformedURLException e) {
+                        Toast.makeText(getApplicationContext(), "The URL is not well specified.", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void handleProtocolException(ProtocolException e) {
+                        Toast.makeText(getApplicationContext(), "Issue with protocol.", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void handleUnsupportedEncodingException(UnsupportedEncodingException e) {
+                        Toast.makeText(getApplicationContext(), "Text encoding is not proper.", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
     }

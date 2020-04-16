@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.google.gson.annotations.SerializedName;
+
 public class VermiproHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION=1;
@@ -16,6 +18,9 @@ public class VermiproHelper extends SQLiteOpenHelper {
     public static final String URL = "http://104.207.150.8:8086/api/";
 
     public static final String IMAGE_URL = "http://104.207.150.8:8086/";
+
+    public static final String ALPHA_NUMERIC_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
 
     public VermiproHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -74,4 +79,38 @@ public class VermiproHelper extends SQLiteOpenHelper {
         Log.d("RESULTS","UPDATED");
 
     }
+
+    @SerializedName("name")
+    public String name;
+
+    @SerializedName("image")
+    public String image;
+
+    @SerializedName("id")
+    public String id;
+
+    @SerializedName("price")
+    public String price;
+
+    @SerializedName("description")
+    public String description;
+
+    @SerializedName("RAVE_PUBLIC_KEY")
+    public String RAVE_PUBLIC_KEY;
+
+    @SerializedName("RAVE_ENCRYPTION_KEY")
+    public String RAVE_ENCRYPTION_KEY;
+
+    @SerializedName("transaportCost")
+    public String transaportCost;
+
+    @SerializedName("quantity")
+    public String quantity;
+
+    @SerializedName("status")
+    public String status;
+
+    @SerializedName("unit")
+    public String unit;
+
 }

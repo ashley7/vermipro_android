@@ -18,7 +18,7 @@ android {
         }
     }
 }
-
+configurations.implementation.exclude(group: 'com.google.code.gson', module: 'gson')
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -30,4 +30,9 @@ dependencies {
     implementation files('libs/GenAsync.1.2.jar')
     implementation files('libs/gson-2.8.6.jar')
     implementation files('libs/KGJsonConverter.jar')
+
+    implementation 'com.github.amigold.fundapter:library:1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.github.Flutterwave:rave-android:1.0.45.1'
 }

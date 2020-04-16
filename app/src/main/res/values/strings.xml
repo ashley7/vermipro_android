@@ -19,4 +19,19 @@
     <string name="activate_account">Activate account</string>
     <string name="this_was_sent_to_the_phone_number_or_email_that_you_provided">This was sent to the phone number or email that you provided</string>
     <string name="resend_the_verification_code">Resend the verification code</string>
+    <string name="name">Name</string>
+    <string name="price">Price</string>
+    <string name="description">Description</string>
+    <string name="what_do_you_have_to_say">Where should we deliver your product?</string>
+    <string name="howmany">How many do you want to buy?</string>
+    <string name="i_will_pay_on_delivery">I will Pay on delivery</string>
+    <string name="pay_with_mobile_money">Pay with mobile money</string>
+    <string name="address">Address</string>
+    <string name="additional_charge">Additional charge</string>
+    <string name="delivery_address">Delivery address</string>
+    <string name="buy_now">Buy now</string>
+    <string name="quantity">Quantity</string>
+    <string name="enter_your_email_address">Enter your Email address</string>
+    <string name="status">Status</string>
+    <string name="orders">Orders</string>
 </resources>
