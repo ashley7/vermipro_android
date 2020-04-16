@@ -89,6 +89,14 @@ public class OldOrdersActivity extends AppCompatActivity {
                         }
                     });
 
+                    dict.addStringField(R.id.date, new StringExtractor<VermiproHelper>() {
+                        @Override
+                        public String getStringValue(VermiproHelper item, int position) {
+                            return "Date: "+item.date;
+                        }
+                    });
+
+
                     dict.addStringField(R.id.status, new StringExtractor<VermiproHelper>() {
                         @Override
                         public String getStringValue(VermiproHelper item, int position) {

@@ -113,4 +113,7 @@ public class VermiproHelper extends SQLiteOpenHelper {
     @SerializedName("unit")
     public String unit;
 
+    @SerializedName("date")
+    public String date;
+
 }
