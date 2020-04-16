@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 
+import com.amigold.fundapter.BindDictionary;
+import com.amigold.fundapter.extractors.StringExtractor;
 import com.flutterwave.raveandroid.RaveConstants;
 import com.flutterwave.raveandroid.RavePayActivity;
 import com.flutterwave.raveandroid.RavePayManager;
@@ -23,11 +25,15 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,13 +42,15 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import static agriculture.vermipro.VermiproHelper.ALPHA_NUMERIC_STRING;
 import static agriculture.vermipro.VermiproHelper.IMAGE_URL;
 import static agriculture.vermipro.VermiproHelper.URL;
 
-public class ProductDetailActivity extends AppCompatActivity {
+public class ProductDetailActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private TextView name,price,description,additional_charge;
     private ImageView image;
@@ -51,11 +59,16 @@ public class ProductDetailActivity extends AppCompatActivity {
     private Button buy_now;
     private EditText delivery_address,quantity,buyer_description;
 
+    private Spinner spinner;
+
     private ArrayList<VermiproHelper> vermiproHelperArrayListroHelper;
-    private RadioGroup mRadioGroup;
+    private RadioGroup mRadioGroup,pickUpLocations;
     private VermiproHelper vermiproHelper;
     private Cursor cursor;
     private double amount;
+    private String pickupLocation;
+    private LinearLayout deliverToMe,pickup;
+    private String delivery,pickup_status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +78,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         intent = getIntent();
 
@@ -92,15 +104,50 @@ public class ProductDetailActivity extends AppCompatActivity {
         mRadioGroup = findViewById(R.id.radiogroup);
         mRadioGroup.check(R.id.mobile_money);
 
+        pickUpLocations = findViewById(R.id.delivary_section);
+        pickUpLocations.check(R.id.deliver_to_me);
+
+        spinner = findViewById(R.id.iwillpickup);
+
+        deliverToMe = findViewById(R.id.deliverToMe);
+        deliverToMe.setVisibility(View.GONE);
+
+        pickup = findViewById(R.id.pickup);
+        pickup.setVisibility(View.GONE);
+        additional_charge.setVisibility(View.GONE);
+
+        spinner.setOnItemSelectedListener(ProductDetailActivity.this);
+
+        loadSpinnerData();
+
         getSupportActionBar().setTitle("Order for "+product_name);
 
         vermiproHelper = new VermiproHelper(ProductDetailActivity.this);
 
         cursor = vermiproHelper.readData();
 
+        pickUpLocations.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                final RadioButton radioButton = findViewById(checkedId);
+
+                 if (radioButton.getText().toString().equals("Deliver to me")){
+                    deliverToMe.setVisibility(View.VISIBLE);
+                    additional_charge.setVisibility(View.VISIBLE);
+                     pickup.setVisibility(View.GONE);
+                 }else if(radioButton.getText().toString().equals("I will pick up")){
+                    pickup.setVisibility(View.VISIBLE);
+                     deliverToMe.setVisibility(View.GONE);
+                     additional_charge.setVisibility(View.GONE);
+                 }
+
+            }
+        });
+
         Picasso.get().load(IMAGE_URL+"/product_images/" + product_image)
                 .placeholder(R.drawable.placeholder)
-                .resize(700,500)
+                .resize(400,250)
                 .error(R.drawable.placeholder).into(image);
 
         name.setText(product_name);
@@ -108,7 +155,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         description.setText(product_description);
 
         quantityToBuy = quantity.getText().toString();
-
 
         PostResponseAsyncTask postResponseAsyncTask = new PostResponseAsyncTask(ProductDetailActivity.this, false,
                 new AsyncResponse() {
@@ -124,11 +170,13 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                paymentMethod = selectedPaymentType();
+               paymentMethod = selectedPaymentType();
+
+               delivery = String.valueOf(spinner.getSelectedItem());
+
+               pickup_status = selectedDeliveryType();
 
                 if (paymentMethod.equals("Pay with mobile money")) {
-
-
 
                     HashMap hashMap = new HashMap();
                     hashMap.put("phone_number",""+userPhone());
@@ -230,8 +278,9 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                 }else if(paymentMethod.equals("I will Pay on delivery")){
 
-                    if (quantityToBuy.equals(""))
+                    if (quantityToBuy.equals("")){
                         quantityToBuy = "1";
+                    }
 
                     HashMap hashMap = new HashMap();
                     hashMap.put("product_id", "" + product_id);
@@ -241,6 +290,8 @@ public class ProductDetailActivity extends AppCompatActivity {
                     hashMap.put("delivery_address",""+delivery_address.getText().toString());
                     hashMap.put("description",buyer_description.getText().toString());
                     hashMap.put("price",""+product_price);
+                    hashMap.put("pickup_status",""+pickup_status);
+                    hashMap.put("pickup_location_id",""+delivery);
 
                     PostResponseAsyncTask postResponseAsyncTask = new
                             PostResponseAsyncTask(ProductDetailActivity.this, hashMap, new AsyncResponse() {
@@ -297,6 +348,28 @@ public class ProductDetailActivity extends AppCompatActivity {
         return radioButton.getText().toString();
     }
 
+    public String selectedDeliveryType(){
+
+        String deliverString;
+
+        String deliveryStatus = null;
+
+        int selectId = pickUpLocations.getCheckedRadioButtonId();
+
+        final RadioButton radioButton = findViewById(selectId);
+
+        deliverString = radioButton.getText().toString();
+
+        if (deliverString.equals("Deliver to me")){
+            deliveryStatus = "deliver";
+        }else if(deliverString.equals("I will pick up")){
+
+            deliveryStatus = "pickup";
+        }
+
+        return deliveryStatus;
+    }
+
     public static final String randomAlphaNumeric(int count) {
         StringBuilder builder = new StringBuilder();
         while (count-- != 0) {
@@ -326,6 +399,9 @@ public class ProductDetailActivity extends AppCompatActivity {
                 hashMap.put("status",""+data.getStringExtra("status"));
                 hashMap.put("tx_ref",""+data.getStringExtra("tx_ref"));
                 hashMap.put("appfee",""+data.getStringExtra("appfee"));
+
+                hashMap.put("pickup_status",""+pickup_status);
+                hashMap.put("pickup_location_id",""+delivery);
 
                 PostResponseAsyncTask postResponseAsyncTask = new
                         PostResponseAsyncTask(ProductDetailActivity.this, hashMap, new AsyncResponse() {
@@ -376,5 +452,49 @@ public class ProductDetailActivity extends AppCompatActivity {
             customerPhone = cursor.getString(1);
         }
         return  customerPhone;
+    }
+
+
+
+    private void loadSpinnerData() {
+        // database handler
+        PostResponseAsyncTask postResponseAsyncTask = new PostResponseAsyncTask(ProductDetailActivity.this, new AsyncResponse() {
+            @Override
+            public void processFinish(String s) {
+//                try {
+                    vermiproHelperArrayListroHelper =  new JsonConverter<VermiproHelper>().toArrayList(s, VermiproHelper.class);
+
+                    ArrayList<String> pickUpLocations = new ArrayList<String>();
+                    pickUpLocations.add("");
+                    for (final VermiproHelper result : vermiproHelperArrayListroHelper) {
+                        pickUpLocations.add(result.name);
+                    }
+
+                    // Creating adapter for spinner
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(ProductDetailActivity.this,
+                            android.R.layout.simple_spinner_item,pickUpLocations);
+
+                    // Drop down layout style - list view with radio button
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                    // attaching data adapter to spinner
+                    spinner.setAdapter(dataAdapter);
+
+//                }catch (Exception e){}
+
+            }
+        });
+        postResponseAsyncTask.execute(URL+"pickup_locations");
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        pickupLocation = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

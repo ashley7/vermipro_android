@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -54,7 +55,6 @@ public class OldOrdersActivity extends AppCompatActivity {
 
         vermiproHelper = new VermiproHelper(OldOrdersActivity.this);
         cursor = vermiproHelper.readData();
-
         HashMap hashMap = new HashMap();
         hashMap.put("phone_number", ""+userPhone());
 
@@ -77,7 +77,8 @@ public class OldOrdersActivity extends AppCompatActivity {
                     dict.addStringField(R.id.price, new StringExtractor<VermiproHelper>() {
                         @Override
                         public String getStringValue(VermiproHelper item, int position) {
-                            return "Total amount Ush "+item.price;
+                            double totalAmount = Double.parseDouble(item.quantity) * Double.parseDouble(item.price);
+                            return "Total amount Ush "+totalAmount;
                         }
                     });
 
@@ -105,7 +106,7 @@ public class OldOrdersActivity extends AppCompatActivity {
                         public void loadImage(String url, ImageView view) {
                             Picasso.get().load(IMAGE_URL+"/product_images/" + url)
                                     .placeholder(R.drawable.placeholder)
-                                    .resize(700,500)
+                                    .resize(400,250)
                                     .error(R.drawable.placeholder).into(view);
                         }
                     });

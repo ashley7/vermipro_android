@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/myorders"
             android:textSize="@dimen/fab_margin"
-            android:gravity="end"
+            android:gravity="start"
             android:textColor="@color/colorPrimary"
             android:text="@string/orders"/>
 
