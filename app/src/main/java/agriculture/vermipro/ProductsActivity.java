@@ -94,7 +94,7 @@ public class ProductsActivity extends AppCompatActivity {
                         public void loadImage(String url, ImageView view) {
                             Picasso.get().load(IMAGE_URL+"/product_images/" + url)
                                     .placeholder(R.drawable.placeholder)
-                                    .resize(380,250)
+                                    .resize(380,380)
                                     .error(R.drawable.placeholder).into(view);
                         }
                     });

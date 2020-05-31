@@ -75,7 +75,7 @@ public class CategoryActivity extends AppCompatActivity {
                         public void loadImage(String url, ImageView view) {
                             Picasso.get().load(IMAGE_URL+"product_images/" + url)
                                     .placeholder(R.drawable.placeholder)
-                                    .resize(200,200)
+                                    .resize(100,100)
                                     .error(R.drawable.placeholder).into(view);
                         }
                     });

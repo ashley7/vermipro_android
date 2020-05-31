@@ -110,11 +110,11 @@ public class ProductDetailActivity extends AppCompatActivity implements AdapterV
         spinner = findViewById(R.id.iwillpickup);
 
         deliverToMe = findViewById(R.id.deliverToMe);
-        deliverToMe.setVisibility(View.GONE);
+        deliverToMe.setVisibility(View.VISIBLE);
 
         pickup = findViewById(R.id.pickup);
         pickup.setVisibility(View.GONE);
-        additional_charge.setVisibility(View.GONE);
+        additional_charge.setVisibility(View.VISIBLE);
 
         spinner.setOnItemSelectedListener(ProductDetailActivity.this);
 
@@ -135,7 +135,7 @@ public class ProductDetailActivity extends AppCompatActivity implements AdapterV
                  if (radioButton.getText().toString().equals("Deliver to me")){
                     deliverToMe.setVisibility(View.VISIBLE);
                     additional_charge.setVisibility(View.VISIBLE);
-                     pickup.setVisibility(View.GONE);
+                    pickup.setVisibility(View.GONE);
                  }else if(radioButton.getText().toString().equals("I will pick up")){
                     pickup.setVisibility(View.VISIBLE);
                      deliverToMe.setVisibility(View.GONE);
@@ -147,7 +147,7 @@ public class ProductDetailActivity extends AppCompatActivity implements AdapterV
 
         Picasso.get().load(IMAGE_URL+"/product_images/" + product_image)
                 .placeholder(R.drawable.placeholder)
-                .resize(400,250)
+                .resize(380,380)
                 .error(R.drawable.placeholder).into(image);
 
         name.setText(product_name);
