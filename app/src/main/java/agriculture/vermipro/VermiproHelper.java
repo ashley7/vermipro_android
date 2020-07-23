@@ -13,7 +13,7 @@ public class VermiproHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION=1;
 
-    private static final String DATABASE_NAME="vermipro";
+    private static final String DATABASE_NAME="vermipro_market";
 
     public static final String URL = "https://market.vermiproug.com/api/";
 
@@ -70,12 +70,8 @@ public class VermiproHelper extends SQLiteOpenHelper {
 
     public void updateRecord(String phone_number) {
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        String data = "1";
-        ContentValues cv = new ContentValues();
-        cv.put("verified",data);
-        db.update("user", cv, "phone_number="+phone_number, null);
-        Log.d("RESULTS","UPDATED");
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("UPDATE user SET verified = "+"'"+1+"' "+ "WHERE phone_number = "+"'"+phone_number+"'");
 
     }
 

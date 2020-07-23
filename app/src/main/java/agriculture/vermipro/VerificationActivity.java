@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -118,6 +119,8 @@ public class VerificationActivity extends AppCompatActivity {
 
                         phone_number = result.getString(1);
 
+
+
                         HashMap hashMap = new HashMap();
                         hashMap.put("phone_number",""+phone_number);
                         hashMap.put("verification_code",""+verification_code.getText().toString());
@@ -161,6 +164,8 @@ public class VerificationActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Text encoding is not proper.", Toast.LENGTH_LONG).show();
                             }
                         });
+
+
 
                     }
                 }else{

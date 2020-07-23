@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -32,11 +33,15 @@ public class OneTimeLoginActivity extends AppCompatActivity {
 
         result = vermiproHelper.readData();
 
+
+
         if(result.getCount() > 0){
 
             while (result.moveToNext()) {
 
                 varified = result.getString(2);
+
+                Log.d("PHONE_NUMBER",varified);
 
                 if(varified.equals("1")){
 

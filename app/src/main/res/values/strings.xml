@@ -4,7 +4,7 @@
     <string name="title_activity_product_detail">Product Detail</string>
     <string name="title_activity_old_orders">Old Orders</string>
     <string name="title_activity_one_time_login">One Time Login</string>
-    <string name="title_activity_verification">VerificationActivity</string>
+    <string name="title_activity_verification">Verify account</string>
     <string name="title_activity_register">Register</string>
     <string name="what_is_your_name">What is your name?</string>
     <string name="what_is_your_phone_number">What is your phone number</string>
