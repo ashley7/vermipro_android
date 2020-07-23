@@ -56,7 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
                 userEmail = email.getText().toString();
                 userAddress = email.getText().toString();
 
-                if (userName.equals("") && phoneNumber.equals("") && userEmail.equals("") && userAddress.equals("")){
+                if (userName.equals("") || phoneNumber.equals("") || userEmail.equals("") || userAddress.equals("")){
                     messgae("All the fields are required");
                     return;
                 }

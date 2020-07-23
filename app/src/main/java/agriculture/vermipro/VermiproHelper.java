@@ -15,12 +15,11 @@ public class VermiproHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME="vermipro";
 
-    public static final String URL = "http://104.207.150.8:8086/api/";
+    public static final String URL = "https://market.vermiproug.com/api/";
 
-    public static final String IMAGE_URL = "http://104.207.150.8:8086/";
+    public static final String IMAGE_URL = "https://market.vermiproug.com/";
 
     public static final String ALPHA_NUMERIC_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
 
     public VermiproHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Vermipro</string>
+    <string name="app_name">Vermipro Market</string>
     <string name="title_activity_products">ProductsActivity</string>
     <string name="title_activity_product_detail">Product Detail</string>
     <string name="title_activity_old_orders">Old Orders</string>
