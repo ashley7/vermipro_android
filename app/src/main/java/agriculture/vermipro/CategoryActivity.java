@@ -61,7 +61,8 @@ public class CategoryActivity extends AppCompatActivity {
                     dict.addStringField(R.id.name, new StringExtractor<VermiproHelper>() {
                         @Override
                         public String getStringValue(VermiproHelper item, int position) {
-                            return ""+item.name;
+//                          return ""+item.name;
+                            return "";
                         }
                     });
 
@@ -75,7 +76,6 @@ public class CategoryActivity extends AppCompatActivity {
                         public void loadImage(String url, ImageView view) {
                             Picasso.get().load(IMAGE_URL+"product_images/" + url)
                                     .placeholder(R.drawable.placeholder)
-                                    .resize(100,100)
                                     .error(R.drawable.placeholder).into(view);
                         }
                     });
