@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/status"
-                android:layout_gravity="end"
+                android:layout_gravity="start"
                 android:text="@string/status"/>
 
         </LinearLayout>
