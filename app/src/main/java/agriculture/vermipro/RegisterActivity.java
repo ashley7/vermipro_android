@@ -74,7 +74,9 @@ public class RegisterActivity extends AppCompatActivity {
                         if (s.equals("SUCCESS")){
                             //save local user
                             vermiproHelper.saveUser(phoneNumber);
-                            startActivity(new Intent(RegisterActivity.this,VerificationActivity.class));
+                            Intent intent = new Intent(RegisterActivity.this,VerificationActivity.class);
+                            intent.putExtra("phone_number",phoneNumber);
+                            startActivity(intent);
                         }else{
                             messgae(s);
                         }

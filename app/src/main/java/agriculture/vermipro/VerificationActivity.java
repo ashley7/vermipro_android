@@ -36,6 +36,7 @@ public class VerificationActivity extends AppCompatActivity {
     private VermiproHelper vermiproHelper;
     private String phone_number;
     private TextView resend_code;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,10 @@ public class VerificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verification);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        intent = getIntent();
+
+        phone_number = intent.getStringExtra("phone_number");
 
         vermiproHelper = new VermiproHelper(VerificationActivity.this);
 
@@ -60,12 +65,13 @@ public class VerificationActivity extends AppCompatActivity {
 
                 if(result.getCount() > 0) {
 
-                    while (result.moveToNext()) {
+//                   while (result.moveToNext()) {
 
-                        phone_number = result.getString(1);
+//                        phone_number = result.getString(1);
 
                         HashMap hashMap = new HashMap();
                         hashMap.put("phone_number",""+phone_number);
+
                         PostResponseAsyncTask postResponseAsyncTask = new PostResponseAsyncTask(VerificationActivity.this, hashMap,
                                 new AsyncResponse() {
                             @Override
@@ -96,7 +102,7 @@ public class VerificationActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Text encoding is not proper.", Toast.LENGTH_LONG).show();
                             }
                         });
-                    }
+//                    }
                 }
             }
         });
@@ -115,12 +121,8 @@ public class VerificationActivity extends AppCompatActivity {
 
                 if(result.getCount() > 0) {
 
-                    while (result.moveToNext()) {
-
-                        phone_number = result.getString(1);
-
-
-
+//                    while (result.moveToNext()) {
+//                    phone_number = result.getString(1);
                         HashMap hashMap = new HashMap();
                         hashMap.put("phone_number",""+phone_number);
                         hashMap.put("verification_code",""+verification_code.getText().toString());
@@ -165,9 +167,7 @@ public class VerificationActivity extends AppCompatActivity {
                             }
                         });
 
-
-
-                    }
+//                    }
                 }else{
                     Toast.makeText(VerificationActivity.this, "No user is registered", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(VerificationActivity.this,RegisterActivity.class));

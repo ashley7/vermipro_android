@@ -33,8 +33,6 @@ public class OneTimeLoginActivity extends AppCompatActivity {
 
         result = vermiproHelper.readData();
 
-
-
         if(result.getCount() > 0){
 
             while (result.moveToNext()) {
@@ -53,7 +51,7 @@ public class OneTimeLoginActivity extends AppCompatActivity {
                 }else{
 
                     Toast.makeText(this, "Please verify your account", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(OneTimeLoginActivity.this,VerificationActivity.class));
+                    startActivity(new Intent(OneTimeLoginActivity.this,RegisterActivity.class));
                     finish();
 
                 }
