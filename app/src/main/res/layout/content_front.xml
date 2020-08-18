@@ -13,6 +13,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/myorders"
+            android:textSize="@dimen/fab_margin"
+            android:gravity="end|top"
+            android:textColor="@color/colorPrimary"
+            android:layout_margin="@dimen/fab_margin"
+            android:text="@string/orders"/>
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/text_margin"
                     android:textSize="@dimen/text_size"
+                    android:textColor="@color/colorPrimaryDark"
                     android:id="@+id/livestock_all"
                     android:text="@string/livestock" />
 
@@ -84,6 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/text_margin"
                     android:textSize="@dimen/text_size"
+                    android:textColor="@color/colorPrimaryDark"
                     android:id="@+id/poultry_all"
                     android:text="@string/poultry" />
 
@@ -136,6 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/text_margin"
                     android:textSize="@dimen/text_size"
+                    android:textColor="@color/colorPrimaryDark"
                     android:id="@+id/vegetables_crops"
                     android:text="@string/vegetables_and_crops" />
 
@@ -189,6 +202,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/text_margin"
                     android:textSize="@dimen/text_size"
+                    android:textColor="@color/colorPrimaryDark"
                     android:id="@+id/farm_management"
                     android:text="@string/farm_management" />
 
@@ -241,6 +255,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/text_margin"
                     android:textSize="@dimen/text_size"
+                    android:textColor="@color/colorPrimaryDark"
                     android:id="@+id/fish_farming"
                     android:text="@string/fish_farming" />
 

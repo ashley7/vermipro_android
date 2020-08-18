@@ -155,16 +155,7 @@ public class ProductDetailActivity extends AppCompatActivity implements AdapterV
         description.setText(product_description);
 
         quantityToBuy = quantity.getText().toString();
-
-        PostResponseAsyncTask postResponseAsyncTask = new PostResponseAsyncTask(ProductDetailActivity.this, false,
-                new AsyncResponse() {
-            @Override
-            public void processFinish(String s) {
-                additional_charge.setText("Transport charge = Ush "+s);
-            }
-        });
-
-        postResponseAsyncTask.execute(URL+"delivery_fee");
+        additional_charge.setText("Delivery charges are negotiated");
 
         buy_now.setOnClickListener(new View.OnClickListener() {
             @Override
