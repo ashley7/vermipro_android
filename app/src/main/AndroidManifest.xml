@@ -20,7 +20,7 @@
         <activity
             android:name=".FrontActivity"
             android:label="@string/title_activity_front"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register"
@@ -36,16 +36,16 @@
         <activity
             android:name=".OldOrdersActivity"
             android:label="@string/title_activity_old_orders"
-            android:parentActivityName=".CategoryActivity"
+            android:parentActivityName=".FrontActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="agriculture.vermipro.CategoryActivity" />
+                android:value="agriculture.vermipro.FrontActivity" />
         </activity>
         <activity
             android:name=".ProductDetailActivity"
             android:label="@string/title_activity_product_detail"
-            android:parentActivityName=".CategoryActivity"
+            android:parentActivityName=".FrontActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -54,11 +54,11 @@
         <activity
             android:name=".ProductsActivity"
             android:label="@string/title_activity_products"
-            android:parentActivityName=".CategoryActivity"
+            android:parentActivityName=".FrontActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="agriculture.vermipro.CategoryActivity" />
+                android:value="agriculture.vermipro.FrontActivity" />
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
