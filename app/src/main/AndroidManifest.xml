@@ -60,7 +60,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="agriculture.vermipro.CategoryActivity" />
         </activity>
-        <activity android:name=".CategoryActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
