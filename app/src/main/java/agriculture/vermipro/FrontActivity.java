@@ -38,10 +38,10 @@ import static agriculture.vermipro.VermiproHelper.URL;
 
 public class FrontActivity extends AppCompatActivity {
 
-    private TextView livestockAll,poultryAll,vegetables_crops,farm_management,fish_farming,myorders;
+    private TextView myorders;
     private ArrayList<VermiproHelper> vermiproHelperArrayListroHelper;
-    private GridView livestock,poultry_grid,vegetables_crops_grid,farm_management_grid,fish_farming_grid;
-    private HashMap hashMap;
+    private GridView features_products,categories;
+
     private PostResponseAsyncTask postResponseAsyncTask;
     private FunDapter<VermiproHelper> fundupter;
     private VermiproHelper category;
@@ -55,6 +55,8 @@ public class FrontActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         myorders = findViewById(R.id.myorders);
+        categories = findViewById(R.id.categories);
+        features_products = findViewById(R.id.features_products);
 
         myorders.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,102 +65,53 @@ public class FrontActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab =  findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+
+
+        postResponseAsyncTask = new PostResponseAsyncTask(FrontActivity.this, true, new AsyncResponse() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+            public void processFinish(String s) {
 
-        livestock = findViewById(R.id.livestock);
-        poultry_grid = findViewById(R.id.poultry_grid);
-        vegetables_crops_grid = findViewById(R.id.vegetables_crops_grid);
-        farm_management_grid = findViewById(R.id.farm_management_grid);
-        fish_farming_grid = findViewById(R.id.fish_farming_grid);
+                try {
 
-        livestockAll = findViewById(R.id.all_livestock);
-        poultryAll = findViewById(R.id.all_poultry);
-        vegetables_crops = findViewById(R.id.all_vegetables_crops);
-        farm_management = findViewById(R.id.all_farm_management);
-        fish_farming = findViewById(R.id.all_fish_farming);
+                    vermiproHelperArrayListroHelper = new JsonConverter<VermiproHelper>().toArrayList(s, VermiproHelper.class);
 
-        loadProducts(""+1, livestock);
-        loadProducts(""+2, poultry_grid);
-        loadProducts(""+3, fish_farming_grid);
-        loadProducts(""+4, vegetables_crops_grid);
-        loadProducts(""+5, farm_management_grid);
+                    dict = new BindDictionary<>();
 
-        livestockAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                    dict.addStringField(R.id.name, new StringExtractor<VermiproHelper>() {
+                        @Override
+                        public String getStringValue(VermiproHelper item, int position) {
+                            return "" + item.cat_name;
+                        }
+                    });
 
-                Intent intent = new Intent(FrontActivity.this, ProductsActivity.class);
-                intent.putExtra("category_id", ""+1);
-                intent.putExtra("category_name", "LIVESTOCK FARMING");
-                startActivity(intent);
+                    fundupter = new FunDapter<>(FrontActivity
+                            .this, vermiproHelperArrayListroHelper, R.layout.front_products_layout, dict);
 
-            }
-        });
+                    categories.setAdapter(fundupter);
 
-        poultryAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                    categories.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent intent = new Intent(FrontActivity.this, ProductsActivity.class);
-                intent.putExtra("category_id", ""+2);
-                intent.putExtra("category_name", "POULTRY FARMING");
-                startActivity(intent);
+                            category = vermiproHelperArrayListroHelper.get(position);
+                            Intent intent = new Intent(FrontActivity.this, ProductsActivity.class);
+                            intent.putExtra("category_id", ""+category.cat_id);
+                            intent.putExtra("category_name", ""+category.cat_name);
+                            startActivity(intent);
+
+                        }
+                    });
+
+
+                }catch (Exception e){}
 
             }
         });
-
-        vegetables_crops.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(FrontActivity.this, ProductsActivity.class);
-                intent.putExtra("category_id", ""+4);
-                intent.putExtra("category_name", "VEGETABLES AND CROPS");
-                startActivity(intent);
-
-            }
-        });
-
-        farm_management.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(FrontActivity.this, ProductsActivity.class);
-                intent.putExtra("category_id", ""+5);
-                intent.putExtra("category_name", "FARM MANAGEMENT");
-                startActivity(intent);
-
-            }
-        });
-
-        fish_farming.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(FrontActivity.this, ProductsActivity.class);
-                intent.putExtra("category_id", ""+3);
-                intent.putExtra("category_name", "FISH FARMING");
-                startActivity(intent);
-
-            }
-        });
-    }
+        postResponseAsyncTask.execute(URL+"categories");
 
 
-
-    private void loadProducts(String category_id, final GridView gridView){
-
-        hashMap = new HashMap();
-        hashMap.put("category_id",""+category_id);
-
-        postResponseAsyncTask = new PostResponseAsyncTask(FrontActivity.this, hashMap,false,
+        postResponseAsyncTask = new PostResponseAsyncTask(FrontActivity.this, false,
                 new AsyncResponse() {
                     @Override
                     public void processFinish(String s) {
@@ -203,9 +156,9 @@ public class FrontActivity extends AppCompatActivity {
                             fundupter = new FunDapter<>(FrontActivity
                                     .this, vermiproHelperArrayListroHelper, R.layout.front_products_layout, dict);
 
-                            gridView.setAdapter(fundupter);
+                            features_products.setAdapter(fundupter);
 
-                            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            features_products.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -254,5 +207,14 @@ public class FrontActivity extends AppCompatActivity {
             }
         });
 
-    }
+ }
+
+
+
+
+
+
+
+
+
 }

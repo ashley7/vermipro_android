@@ -111,4 +111,10 @@ public class VermiproHelper extends SQLiteOpenHelper {
     @SerializedName("date")
     public String date;
 
+    @SerializedName("cat_id")
+    public String cat_id;
+
+    @SerializedName("cat_name")
+    public String cat_name;
+
 }
