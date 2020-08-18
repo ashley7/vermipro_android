@@ -45,6 +45,7 @@ public class FrontActivity extends AppCompatActivity {
     private PostResponseAsyncTask postResponseAsyncTask;
     private FunDapter<VermiproHelper> fundupter;
     private VermiproHelper category;
+    private BindDictionary<VermiproHelper> dict;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,108 +84,7 @@ public class FrontActivity extends AppCompatActivity {
         farm_management = findViewById(R.id.all_farm_management);
         fish_farming = findViewById(R.id.all_fish_farming);
 
-        hashMap = new HashMap();
-        hashMap.put("category_id",""+1);
-
-        postResponseAsyncTask = new PostResponseAsyncTask(FrontActivity.this, hashMap,false,
-                new AsyncResponse() {
-                    @Override
-                    public void processFinish(String s) {
-
-                        Log.d("DATA",s);
-
-                        try {
-
-                            vermiproHelperArrayListroHelper =  new JsonConverter<VermiproHelper>().toArrayList(s, VermiproHelper.class);
-
-                            BindDictionary<VermiproHelper> dict = new BindDictionary<>();
-
-                            dict.addStringField(R.id.name, new StringExtractor<VermiproHelper>() {
-                                @Override
-                                public String getStringValue(VermiproHelper item, int position) {
-                                    return ""+item.name;
-                                }
-                            });
-
-                            dict.addStringField(R.id.price, new StringExtractor<VermiproHelper>() {
-                                @Override
-                                public String getStringValue(VermiproHelper item, int position) {
-                                    return "Ush "+item.price;
-                                }
-                            });
-
-                            dict.addDynamicImageField(R.id.image, new StringExtractor<VermiproHelper>() {
-                                @Override
-                                public String getStringValue(VermiproHelper item, int position) {
-                                    return item.image;
-                                }
-                            }, new DynamicImageLoader() {
-                                @Override
-                                public void loadImage(String url, ImageView view) {
-                                    Picasso.get().load(IMAGE_URL+"/product_images/" + url)
-                                            .placeholder(R.drawable.placeholder)
-                                            .resize(180,180)
-                                            .error(R.drawable.placeholder).into(view);
-                                }
-                            });
-
-                             fundupter = new FunDapter<>(FrontActivity
-                                    .this, vermiproHelperArrayListroHelper, R.layout.front_products_layout, dict);
-                             livestock.setAdapter(fundupter);
-
-                             livestock.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                                    switch (parent.getId()){
-
-                                        case R.id.livestock:
-
-                                            category = vermiproHelperArrayListroHelper.get(position);
-
-                                            Intent intent = new Intent(FrontActivity.this, ProductDetailActivity.class);
-
-                                            Log.d("DATALIVESTOCK",category.id);
-                                            intent.putExtra("product_id", category.id);
-                                            intent.putExtra("product_name", category.name);
-                                            intent.putExtra("product_price", category.price);
-                                            intent.putExtra("product_image", category.image);
-                                            intent.putExtra("product_unit", category.unit);
-                                            intent.putExtra("product_description", category.description);
-                                            startActivity(intent);
-                                    }
-                                }
-                            });
-
-                        }catch (Exception e){}
-
-                    }
-                });
-
-        postResponseAsyncTask.execute(URL+"category_products_limit_eight");
-        postResponseAsyncTask.setEachExceptionsHandler(new EachExceptionsHandler() {
-            @Override
-            public void handleIOException(IOException e) {
-                Toast.makeText(getApplicationContext(), "Internet connectivity is weak.", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void handleMalformedURLException(MalformedURLException e) {
-                Toast.makeText(getApplicationContext(), "The URL is not well specified.", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void handleProtocolException(ProtocolException e) {
-                Toast.makeText(getApplicationContext(), "Issue with protocol.", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void handleUnsupportedEncodingException(UnsupportedEncodingException e) {
-                Toast.makeText(getApplicationContext(), "Text encoding is not proper.", Toast.LENGTH_LONG).show();
-            }
-        });
-
-
+        loadProducts(""+1, livestock);
         loadProducts(""+2, poultry_grid);
         loadProducts(""+3, fish_farming_grid);
         loadProducts(""+4, vegetables_crops_grid);
@@ -255,10 +155,10 @@ public class FrontActivity extends AppCompatActivity {
 
     private void loadProducts(String category_id, final GridView gridView){
 
-        HashMap hashMap = new HashMap();
+        hashMap = new HashMap();
         hashMap.put("category_id",""+category_id);
 
-        PostResponseAsyncTask postResponseAsyncTask = new PostResponseAsyncTask(FrontActivity.this, hashMap,false,
+        postResponseAsyncTask = new PostResponseAsyncTask(FrontActivity.this, hashMap,false,
                 new AsyncResponse() {
                     @Override
                     public void processFinish(String s) {
@@ -269,7 +169,7 @@ public class FrontActivity extends AppCompatActivity {
 
                             vermiproHelperArrayListroHelper =  new JsonConverter<VermiproHelper>().toArrayList(s, VermiproHelper.class);
 
-                            BindDictionary<VermiproHelper> dict = new BindDictionary<>();
+                            dict = new BindDictionary<>();
 
                             dict.addStringField(R.id.name, new StringExtractor<VermiproHelper>() {
                                 @Override
@@ -300,18 +200,21 @@ public class FrontActivity extends AppCompatActivity {
                                 }
                             });
 
-                            FunDapter<VermiproHelper> fundupter = new FunDapter<>(FrontActivity
+                            fundupter = new FunDapter<>(FrontActivity
                                     .this, vermiproHelperArrayListroHelper, R.layout.front_products_layout, dict);
+
                             gridView.setAdapter(fundupter);
 
                             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                                    VermiproHelper category = vermiproHelperArrayListroHelper.get(position);
+                                    category = vermiproHelperArrayListroHelper.get(position);
+
                                     Intent intent = new Intent(FrontActivity.this, ProductDetailActivity.class);
 
                                     Log.d("DATA",category.id);
+
                                     intent.putExtra("product_id", category.id);
                                     intent.putExtra("product_name", category.name);
                                     intent.putExtra("product_price", category.price);
